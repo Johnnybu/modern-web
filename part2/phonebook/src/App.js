@@ -3,12 +3,15 @@ import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
 import PersonsService from './services/persons';
+import Notification from './Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [successMessage, setSuccessMessage] = useState(undefined);
+  const [errorMessage, setErrorMessage] = useState(undefined);
   
   useEffect(() => {
     PersonsService.getPersons()
@@ -22,6 +25,20 @@ const App = () => {
     setNewNumber('');
   };
 
+  const displaySuccess = message => {
+    setSuccessMessage(message);
+    setTimeout(() => {
+      setSuccessMessage(undefined);
+    }, 5000);
+  };
+
+  const displayError = message => {
+    setErrorMessage(message);
+    setTimeout(() => {
+      setErrorMessage(undefined);
+    }, 5000);
+  };
+
   const updatePerson = async (person) => {
     if (!window.confirm(`${person.name} is already added to the phonebook, replace the old number with a new one?`)) {
       resetInput();
@@ -30,9 +47,19 @@ const App = () => {
 
     person.number = newNumber;
     
-    const updatedPerson = await PersonsService.updatePerson(person);
+    try {
+      const updatedPerson = await PersonsService.updatePerson(person);
 
-    setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson));
+      setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson));
+
+      displaySuccess(`Updated ${person.name}`);
+    } catch (error) {
+      console.log(error);
+
+      displayError(`Information of ${person.name} has already been removed from server`);
+      
+      setPersons(persons.filter(p => p.id !== person.id));
+    }
   };
 
   const addPerson = async (event) => {
@@ -54,6 +81,9 @@ const App = () => {
     const newPerson = await PersonsService.createPerson(person);
 
     setPersons(persons.concat(newPerson));
+
+    displaySuccess(`Added ${newPerson.name}`);
+
     resetInput();
   };
 
@@ -82,6 +112,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={successMessage} className='success' />
+
+      <Notification message={errorMessage} className='error' />
 
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
