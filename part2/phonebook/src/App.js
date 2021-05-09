@@ -45,10 +45,10 @@ const App = () => {
       return;
     }
 
-    person.number = newNumber;
+    const personCopy = {...person, number: newNumber}
     
     try {
-      const updatedPerson = await PersonsService.updatePerson(person);
+      const updatedPerson = await PersonsService.updatePerson(personCopy);
 
       setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson));
 
@@ -56,9 +56,13 @@ const App = () => {
     } catch (error) {
       console.log(error);
 
-      displayError(`Information of ${person.name} has already been removed from server`);
+      if (error?.response?.data) {
+        displayError(error.response.data.error);
+      } else {
+        displayError(`Information of ${person.name} has already been removed from server`);
       
-      setPersons(persons.filter(p => p.id !== person.id));
+        setPersons(persons.filter(p => p.id !== person.id));
+      }
     }
   };
 
@@ -78,12 +82,16 @@ const App = () => {
       number: newNumber
     };
 
-    const newPerson = await PersonsService.createPerson(person);
+    try {
+      const newPerson = await PersonsService.createPerson(person);
 
-    setPersons(persons.concat(newPerson));
+      setPersons(persons.concat(newPerson));
 
-    displaySuccess(`Added ${newPerson.name}`);
-
+      displaySuccess(`Added ${newPerson.name}`);
+    } catch (error) {
+      displayError(error?.response?.data?.error);
+    }
+    
     resetInput();
   };
 
