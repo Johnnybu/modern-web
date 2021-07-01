@@ -145,7 +145,7 @@ describe('most blogs', () => {
   });
 
   test('counts Edsger W. Dijkstra blogs to be 2', () => {
-    const {author, blogs} = listHelper.mostBlogs(biggerList);
+    const {blogs} = listHelper.mostBlogs(biggerList);
 
     expect(blogs).toBe(2);
   });
@@ -154,7 +154,7 @@ describe('most blogs', () => {
     const {author} = listHelper.mostBlogs(biggerList);
 
     expect(author).toBe('Edsger W. Dijkstra');
-  })
+  });
  
 });
 
@@ -192,7 +192,7 @@ describe('most likes', () => {
   });
 
   test('counts Edsger W. Dijkstra total likes to be 8', () => {
-    const {author, likes} = listHelper.mostLikes(biggerList);
+    const {likes} = listHelper.mostLikes(biggerList);
 
     expect(likes).toBe(8);
   });
@@ -201,6 +201,6 @@ describe('most likes', () => {
     const {author} = listHelper.mostLikes(biggerList);
 
     expect(author).toBe('Edsger W. Dijkstra');
-  })
+  });
  
 });
