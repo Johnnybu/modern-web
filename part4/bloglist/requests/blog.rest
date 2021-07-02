@@ -4,9 +4,10 @@ GET http://localhost:3003/api/blogs HTTP/1.1
 
 POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYwZGNmYjg1NDkzOTM3NzdhNzM0MDgyMyIsImlhdCI6MTYyNTI0MTM1OCwiZXhwIjoxNjI1MjQ0OTU4fQ.cq2VK9RKg_4oEXGkFBxcerTODwHFQ89CinaiR8R_1Yo
 
 {
-  "title": "A Fourth Blog",
+  "title": "A Third Blog",
   "author": "Johnny",
   "url": "/api/blogs/609abde01da7f70ec7336b26",
   "likes": 2,
@@ -23,12 +24,31 @@ POST http://localhost:3003/api/users HTTP/1.1
 Content-Type: application/json
 
 {
-    "notes": [],
-    "username": "root",
-    "name": "Superuser",
-    "password": "salainen"
+    "name": "Blart",
+    "password": "sdf"
 }
 
 ###
 
-DELETE http://localhost:3003/api/blogs/60dcfc49c01ec97aa1116976 HTTP/1.1
+DELETE http://localhost:3003/api/blogs/60df407d8954322c1363e8a0 HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluaXN0cmF0b3IyIiwiaWQiOiI2MGRmMzIxNTUzODFlNDc4MzUzMThlMzYiLCJpYXQiOjE2MjUyNDIwMDMsImV4cCI6MTYyNTI0NTYwM30.6PJF0xgZ9gZt-sLJsN8RZfZHPLd9ltDizmKPtA17rQg
+
+###
+
+POST http://localhost:3003/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "salainen"
+}
+
+###
+
+POST http://localhost:3003/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "administrator2",
+  "password": "sdf"
+}
